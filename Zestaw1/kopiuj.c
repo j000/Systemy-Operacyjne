@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <string.h> /* strerror */
 #include <unistd.h> /* open, read, write */
+#include <sys/stat.h>
 #include <fcntl.h> /* O_RDONLY, O_WRONLY, ... */
 
 #define BUF_SIZE 1024
@@ -28,7 +29,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	int fd2 = open(docelowy, O_WRONLY | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+	int fd2 = open(docelowy, O_WRONLY | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO); /* utwórz i 777 */
 	if (fd2 < 0) { /* sprawdzamy czy udało się otworzyć */
 		printf("nie można otworzyć pliku docelowego %s: %s\n", docelowy, strerror(errno));
 		return 1;
@@ -38,21 +39,23 @@ int main(int argc, char **argv) {
 
 	char buf[BUF_SIZE] = { 0 }; /* zmienna na przyczytane dane */
 
-	int number_of_bytes = 0; /* ile bajtów przeczytaliśmy */
+	int read_bytes = 0; /* ile bajtów przeczytaliśmy */
+	int written_bytes = 0;
 
-	/* pętla dopóki przeczytaliśmy jakieś dane */
-	while ((number_of_bytes = read(fd1, buf, BUF_SIZE)) != 0) {
+	/* pętla dopóki przeczytaliśmy jakieś dane lub błąd */
+	while ((read_bytes = read(fd1, buf, BUF_SIZE)) != 0) {
 		printf(".");
-		write(fd2, buf, number_of_bytes); /* zapisz do pliku */
-	}
+		written_bytes = write(fd2, buf, read_bytes); /* zapisz do pliku */
 
+		if (written_bytes < 0) { /* jeśli był błąd przy zapisie */
+			printf("write() failed: %s\n", strerror(errno));
+			return 1;
+		}
+	}
 	printf("\n");
 
-	if (number_of_bytes < 0) { /* jeśli był błąd przy czytaniu */
+	if (read_bytes < 0) { /* jeśli był błąd przy czytaniu */
 		printf("read() failed: %s\n", strerror(errno));
-		return 1;
-	} else if (errno != 0) { /* jeśli był błąd przy zapisie (chyba powinno działać) */
-		printf("write() failed: %s\n", strerror(errno));
 		return 1;
 	}
 
