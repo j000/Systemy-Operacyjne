@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int procinfo(const char* name) {
+int procinfo(const char *name) {
 	printf(
 		"%-10s: pid:%6d | ppid:%5d | uid:%6d | gid:%6d | pgid:%5d\n",
 		name,
