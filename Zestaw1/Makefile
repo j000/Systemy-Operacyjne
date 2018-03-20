@@ -6,7 +6,7 @@ zestaw := $(notdir $(lastword $(CURDIR)))
 tar := Rymut_$(zestaw).tar.gz
 
 # flagi
-CFLAGS := -std=c11 -O2 -Wall -Wextra
+CFLAGS := -std=c99 -O2 -Wall -Wextra
 
 ifeq ($(shell $(CC) -dumpversion),4.7)
 	# welcome to 2012
