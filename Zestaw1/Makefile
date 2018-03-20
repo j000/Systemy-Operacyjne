@@ -17,17 +17,17 @@ else
 	CFLAGS += -Wpedantic
 endif
 
-HELPERS := procinfo.o
-FILES := $(filter-out $(HELPERS:.o=.c),$(wildcard *.c))
+HELPERS := procinfo.c
+FILES := $(filter-out $(HELPERS),$(wildcard *.c))
 
 .PHONY: all
 all: $(FILES:.c=.x)
 
 # wszystko poza kopiuj.x zależy od procinfo.o
-$(filter-out kopiuj.x,$(FILES:.c=.x)): $(HELPERS)
+$(filter-out kopiuj.x,$(FILES:.c=.x)): $(HELPERS:.c=.o)
 
 # make może usunąć te pliki
-.INTERMEDIATE: $(HELPERS)
+.INTERMEDIATE: $(HELPERS:.c=.o)
 
 .PHONY: clean
 clean:
