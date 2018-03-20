@@ -1,13 +1,12 @@
 # Jarosław Rymut
 
 # numer zestawu
-zestaw := 1
+zestaw := $(notdir $(lastword $(CURDIR)))
 # nazwa spakowanego pliku
-tar := Rymut_Zestaw$(zestaw).tar.gz
+tar := Rymut_$(zestaw).tar.gz
 
 # flagi
 CFLAGS := -std=c11 -O2 -Wall -Wextra
-LDFLAGS := -Wl,--as-needed
 
 ifeq ($(shell $(CC) -dumpversion),4.7)
 	# welcome to 2012
@@ -26,7 +25,7 @@ all: $(FILES:.c=.x)
 # wszystko poza kopiuj.x zależy od procinfo.o
 $(filter-out kopiuj.x,$(FILES:.c=.x)): $(HELPERS:.c=.o)
 
-# make może usunąć te pliki
+# make może automatycznie usunąć te pliki
 .INTERMEDIATE: $(HELPERS:.c=.o)
 
 .PHONY: clean
@@ -35,9 +34,9 @@ clean:
 
 .PHONY: tar
 tar:
-# 'file changed as we read it'
+# poprawka na błąd 'file changed as we read it'
 	[ -f $(tar) ] || touch $(tar)
-	tar -caf ./$(tar) --exclude=$(tar) --exclude=*.x -C .. Zestaw$(zestaw)
+	tar -caf ./$(tar) --exclude=$(tar) --exclude=*.x --exclude=.* -C .. $(zestaw)
 
 # kopia wbudowanej reguły, z nowym rozszerzeniem
 %.x: %.o
