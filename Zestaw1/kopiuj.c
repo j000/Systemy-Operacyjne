@@ -9,15 +9,12 @@
 #define BUF_SIZE 1024
 
 int main(int argc, char **argv) {
-	char *zrodlowy = "kopiuj.c";
-	char *docelowy = "kopia_kopiuj.c";
-
 	if (argc < 3) {
 		printf("Użycie: %s plik_źródłowy plik_docelowy\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	zrodlowy = argv[1];
-	docelowy = argv[2];
+	char *zrodlowy = argv[1];
+	char *docelowy = argv[2];
 
 	int fd1 = open(zrodlowy, O_RDONLY);
 	if (fd1 < 0) { /* sprawdzamy czy udało się otworzyć */
