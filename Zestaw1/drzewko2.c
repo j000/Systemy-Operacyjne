@@ -27,9 +27,9 @@ int main(int UNUSED(argc), char **argv) {
 		default:
 			/* macierzysty */
 			n=N; /* wyjdź z pętli */
-			wait(NULL);
 		}
 	}
+	wait(NULL);
 
 	return EXIT_SUCCESS;
 }

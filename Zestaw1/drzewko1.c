@@ -24,10 +24,10 @@ int main(int UNUSED(argc), char **argv) {
 			/* potomny */
 			procinfo(argv[0]);
 			return EXIT_SUCCESS;
-		default:
-			/* macierzysty */
-			wait(NULL);
 		}
+	}
+	for (int n = 0; n < N; ++n) {
+		wait(NULL);
 	}
 
 	return EXIT_SUCCESS;
