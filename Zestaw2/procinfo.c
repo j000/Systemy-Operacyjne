@@ -1,0 +1,1 @@
+../Zestaw1/procinfo.c
