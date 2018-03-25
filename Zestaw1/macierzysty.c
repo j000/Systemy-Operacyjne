@@ -23,7 +23,11 @@ int main(int UNUSED(argc), char **argv) {
 			/* potomny */
 			sleep(1);
 
-			execl("./potomny.x", "potomny.x", NULL);
+			char *const tmp[] = {
+				"./potomny.x",
+				NULL
+			};
+			execv("./potomny.x", tmp);
 			break;
 		default:
 			/* macierzysty */
