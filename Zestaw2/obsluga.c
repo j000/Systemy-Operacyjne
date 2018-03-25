@@ -14,7 +14,7 @@ void print(int a) {
 }
 
 int main(int argc, char **argv) {
-	if (argc < 3) {
+	if (argc != 3 || argv[1][1] != '\0') {
 		printf("Użycie: %s [dip] numer_sygnalu\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
@@ -36,11 +36,9 @@ int main(int argc, char **argv) {
 	}
 	printf(" %s (%d)\n", sys_siglist[signal_no], signal_no);
 
-	do {
-		if (signal(signal_no, signal_routine) == SIG_ERR) {
-			perror("Nie można obslużyć sygnału");
-			exit(EXIT_FAILURE);
-		}
-
-	} while (pause() == -1 && errno == EINTR);
+	if (signal(signal_no, signal_routine) == SIG_ERR) {
+		perror("Nie można obslużyć sygnału");
+		exit(EXIT_FAILURE);
+	}
+	pause();
 }
