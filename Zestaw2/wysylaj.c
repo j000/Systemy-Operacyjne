@@ -43,5 +43,7 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
+	wait();
+
 	return EXIT_SUCCESS;
 }
