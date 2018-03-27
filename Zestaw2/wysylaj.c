@@ -28,19 +28,19 @@ int main(int argc, char **argv) {
 		execl("./obsluga.x", "./obsluga.x", argv[1], argv[2], NULL);
 		printf("exec error!\n");
 		return EXIT_FAILURE;
-	default:
-		sleep(1);
-		// sprawdzam czy istnieje
-		if (kill(pid, 0) == -1 && errno == ESRCH) {
-			printf("proces potomny nie istnieje\n");
-			exit(EXIT_FAILURE);
-		}
-		// wysyłam sygnał
-		printf("wysyłam sygnał\n");
-		if (kill(pid, atoi(argv[2])) == -1) {
-			perror("nie można wysłać sygnału");
-			exit(EXIT_FAILURE);
-		}
+	}
+
+	sleep(1);
+	// sprawdzam czy istnieje
+	if (kill(pid, 0) == -1 && errno == ESRCH) {
+		printf("proces potomny nie istnieje\n");
+		exit(EXIT_FAILURE);
+	}
+	// wysyłam sygnał
+	printf("wysyłam sygnał\n");
+	if (kill(pid, atoi(argv[2])) == -1) {
+		perror("nie można wysłać sygnału");
+		exit(EXIT_FAILURE);
 	}
 
 	return EXIT_SUCCESS;
