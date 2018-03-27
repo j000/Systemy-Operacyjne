@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/wait.h>
 
 #include "procinfo.h"
 
@@ -56,7 +57,7 @@ int main(int argc, char **argv) {
 	i = N + 1;
 
 	while (--i) {
-		wait();
+		wait(NULL);
 	}
 
 	return EXIT_SUCCESS;
