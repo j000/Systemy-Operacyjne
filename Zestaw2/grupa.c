@@ -53,5 +53,11 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
+	i = N + 1;
+
+	while (--i) {
+		wait();
+	}
+
 	return EXIT_SUCCESS;
 }
