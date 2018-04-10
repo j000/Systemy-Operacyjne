@@ -3,12 +3,28 @@
 
 #define _DEFAULT_SOURCE 1
 
-#include <unistd.h>
+#include <stdio.h> /* perror */
+#include <stdlib.h> /* rand, srand */
+#include <unistd.h> /* usleep */
 #include <fcntl.h> /* open */
 #include <sys/stat.h> /* S_IRWXU, S_IRWXG, S_IRWXO */
 #include <errno.h>
 #include <string.h> /* strerror */
 #include <time.h>
+
+#ifndef BUF_SIZE
+#define BUF_SIZE 64
+#endif
+
+#ifndef magazyn
+#define magazyn "magazyn.txt"
+#endif
+
+#ifndef schowek
+#define schowek "schowek.txt"
+#endif
+
+#define TERMINAL(X) "\033[" #X "m"
 
 void quit(void);
 
@@ -32,7 +48,7 @@ void kopiuj(char *info, int fd1, int fd2) {
 		if (read_bytes < BUF_SIZE)
 			buf[read_bytes] = 0;
 
-		printf("%s: %*s %dB\n", info, read_bytes, buf, read_bytes);
+		printf("%s %dB: %.*s\n", info, read_bytes, read_bytes, buf);
 		usleep((double)rand() / RAND_MAX * 2e6);
 	}
 
@@ -44,23 +60,27 @@ void kopiuj(char *info, int fd1, int fd2) {
 
 void producent(int fd) {
 	int zrodlo;
+
 	if ((zrodlo = open(magazyn, O_RDONLY)) == -1) {
 		fprintf(stderr, "Nie można otworzyć pliku \"%s\": %s\n", magazyn, strerror(errno));
 		quit();
 	}
-	kopiuj("\033[32m" "producent" "\033[0m", zrodlo, fd);
-	close(fd);
+
+	kopiuj(TERMINAL(32) "producent" TERMINAL(0), zrodlo, fd);
+
 	close(zrodlo);
 }
 
 void konsument(int fd) {
 	int cel;
+
 	if ((cel = open(schowek, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1) {
 		fprintf(stderr, "Nie można otworzyć pliku \"%s\": %s\n", magazyn, strerror(errno));
 		quit();
 	}
-	kopiuj("\033[34m" "konsument" "\033[0m", fd, cel);
-	close(fd);
+
+	kopiuj(TERMINAL(34) "konsument" TERMINAL(0), fd, cel);
+
 	close(cel);
 }
 
