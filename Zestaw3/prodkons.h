@@ -45,9 +45,6 @@ void kopiuj(char *info, int fd1, int fd2) {
 			quit();
 		}
 
-		if (read_bytes < BUF_SIZE)
-			buf[read_bytes] = 0;
-
 		printf("%s %dB: %.*s\n", info, read_bytes, read_bytes, buf);
 		usleep((double)rand() / RAND_MAX * 2e6);
 	}
