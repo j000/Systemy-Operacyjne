@@ -61,7 +61,7 @@ removepipe:
 	-rm -f pipe
 
 .PHONY: zad2
-zad2: pipe run_zad2 removepipe
+zad2: pipe run_zad2 removepipe porownaj
 
 .PHONY: run_zad2
 run_zad2: producent.x konsument.x
