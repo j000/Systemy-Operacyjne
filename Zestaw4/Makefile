@@ -30,7 +30,7 @@ clean:
 tar:
 # poprawka na błąd 'file changed as we read it'
 	[ -f $(tar) ] || touch $(tar)
-	tar -caf ./$(tar) --exclude=$(tar) --exclude=*.x --exclude=.* -C .. $(zestaw)
+	tar -caf ./$(tar) --exclude=$(tar) --exclude=*.x --exclude=.* --exclude=libsem.a -C .. $(zestaw)
 
 # kopia wbudowanej reguły, z nowym rozszerzeniem
 %.x: %.o
