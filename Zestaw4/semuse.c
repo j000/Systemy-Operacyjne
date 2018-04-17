@@ -41,4 +41,6 @@ int main(int argc, char **argv) {
 	}
 
 	semInfo(semid);
+
+	return EXIT_SUCCESS;
 }
