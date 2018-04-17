@@ -28,6 +28,7 @@ int semDecl(int id) {
 
 /* Inicjalizuje semafor wartością val */
 void semInit(int semid, int val) {
+	printf("Ustawiam wartość semafora na %d\n", val);
 	if (semctl(semid, 0, SETVAL, (union semun){ .val = val }) == -1) {
 		perror("semctl(SETVAL) error");
 		exit(EXIT_FAILURE);
