@@ -6,7 +6,7 @@ zestaw := $(notdir $(lastword $(CURDIR)))
 tar := Rymut_$(zestaw).tar.gz
 
 # flagi
-CFLAGS := -std=c99 -O2 -Wall -Wextra -fPIC -fPIE
+CFLAGS := -std=c99 -O2 -Wall -Wextra
 
 ARFLAGS += -c -s
 
@@ -17,6 +17,9 @@ ifeq ($(shell $(CC) -dumpversion),4.7)
 else
 	CFLAGS += -Wpedantic
 endif
+
+CFLAGS += -fPIC -fPIE
+LDFLAGS += -fPIC -fPIE -pie
 
 HELPERS := shmem.c sem.c
 FILES := $(filter-out $(HELPERS),$(wildcard *.c))
