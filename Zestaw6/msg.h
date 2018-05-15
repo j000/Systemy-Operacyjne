@@ -16,11 +16,11 @@ const int default_id = 'X';
 int msgCreate(int id);
 /* Usuwa kolejkę komunikatów o identyfikatorze msgid. */
 void msgRm(int msgid);
-/* Wysyła komunikat wskazywany przez msg do kolejki o identyfikatorze msgid. Stworzyć własny typ danych komunikat zgodny ze strukturą msgbuf. */
+/* Wysyła komunikat wskazywany przez msg do kolejki o identyfikatorze msgid. */
 void msgSend(int msgid, komunikat *msg);
 /* Odbiera z kolejki msgid komunikat typu mtype i zapisuje do msg. */
 void msgRecv(int msgid, komunikat *msg, int mtype);
-/* Wypisuje informacje o kolejce komunikatów. Proszę użyć funkcji systemowej msgctl z komendą IPC_STAT. */
+/* Wypisuje informacje o kolejce komunikatów. */
 void msgInfo(int msgid);
 
 
