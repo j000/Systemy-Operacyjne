@@ -18,8 +18,8 @@ else
 	CFLAGS += -Wpedantic
 endif
 
-CFLAGS += -fPIC -fPIE
-LDFLAGS += -fPIC -fPIE -pie
+CFLAGS += -fPIC
+LDFLAGS += -fPIC
 
 HELPERS := shmem.c sem.c
 FILES := $(filter-out $(HELPERS),$(wildcard *.c))
@@ -38,6 +38,7 @@ tar:
 	tar -caf ./$(tar) --exclude=$(tar) --exclude=*.x --exclude=.* --exclude=*.so -C .. $(zestaw)
 
 # kopia wbudowanej reguły, z nowym rozszerzeniem
+%.x: private LDFLAGS += -pie
 %.x: %.o
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) $(OUTPUT_OPTION)
 
