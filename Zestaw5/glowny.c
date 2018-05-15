@@ -40,14 +40,16 @@ void quit(int UNUSED(a)) {
 	exit(1);
 }
 
-void on_exit_semRm(int UNUSED(a), void *arg) {
-	int tmp = *(int *)arg;
-	semRm(tmp);
+void exit_s_wolne(void) {
+	semRm(s_wolne);
 }
 
-void on_exit_shmRm(int UNUSED(a), void *arg) {
-	int tmp = *(int *)arg;
-	shmRm(tmp);
+void exit_s_zajete(void) {
+	semRm(s_zajete);
+}
+
+void exit_shmid(void) {
+	shmRm(shmid);
 }
 
 int main(int UNUSED(argc), char **UNUSED(argv)) {
@@ -57,15 +59,15 @@ int main(int UNUSED(argc), char **UNUSED(argv)) {
 
 	/* przygotowuję pamięc i semafory */
 	shmid = shmCreate(id, sizeof(towar)*BUF_SIZE);
-	on_exit(on_exit_shmRm, &shmid);
+	atexit(exit_shmid);
 
 	s_wolne = semDecl('W');
 	semInit(s_wolne, BUF_SIZE);
-	on_exit(on_exit_semRm, &s_wolne);
+	atexit(exit_s_wolne);
 
 	s_zajete = semDecl('Z');
 	semInit(s_zajete, 0);
-	on_exit(on_exit_semRm, &s_zajete);
+	atexit(exit_s_zajete);
 
 	/* uruchamiam producenta i konsumenta */
 	fork_wrapper("./producent.x");
