@@ -1,4 +1,5 @@
 #define _REENTRANT
+#define _XOPEN_SOURCE 700
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,6 +14,18 @@
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t print = PTHREAD_MUTEX_INITIALIZER;
 static unsigned licznik = 0;
+
+#if _POSIX_VERSION >= 200800L
+
+#define usleep my_usleep
+
+__attribute__((always_inline)) inline
+void usleep(unsigned long microseconds) {
+	struct timespec delay = {.tv_sec = microseconds / 1000000l, .tv_nsec = (microseconds % 1000000l) * 1000};
+	while (nanosleep(&delay, &delay) == -1);
+}
+
+#endif
 
 void wypisz_lewo(const unsigned linia, const char *format, ...) {
 	va_list args;
