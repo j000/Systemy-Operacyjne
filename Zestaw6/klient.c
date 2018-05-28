@@ -12,19 +12,23 @@ int main(int UNUSED(argc), char **UNUSED(argv)) {
 	komunikat msg = {.type = 1, .pid = pid};
 	int msgid = msgCreate(default_id);
 
+	char buf[sizeof(msg.msg)] = {0};
+
 	printf("Podaj wiadomość:\n");
-	if (NULL == fgets(msg.msg, sizeof(msg.msg), stdin)) {
+	if (NULL == fgets(buf, sizeof(buf), stdin)) {
 		perror("fgets() error");
 		exit(EXIT_FAILURE);
 	}
 
-	msg.msg[strcspn(msg.msg, "\n")] = '\0';
+	buf[strcspn(buf, "\n")] = '\0';
+
+	strcpy(msg.msg, buf);
 
 	msgSend(msgid, &msg);
 	printf("Wysłano \"%.*s\"\n", (int)sizeof(msg.msg), msg.msg);
 
 	msgRecv(msgid, &msg, pid);
 
-	printf("Odpowiedź serwera: \"%.*s\"\n", (int)sizeof(msg.msg), msg.msg);
+	printf("Odpowiedź serwera: \"%.*s\" -> \"%.*s\"\n", (int)sizeof(buf), buf, (int)sizeof(msg.msg), msg.msg);
 	return EXIT_SUCCESS;
 }
